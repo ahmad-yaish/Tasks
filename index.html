@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Calendar</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body onload="displayCurrentDateTime()">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <!-- الصفحة الأولى -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container center-content">
+          <img src="https://i.imgur.com/7wQljde.png" alt="Logo" class="logo">
+          <h1 class="welcome-text">Welcome</h1>
+          <button class="next-button" id="nextToForm">Next</button>
+          <div class="page-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- الصفحة الثانية -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container form-container center-content">
+          <img src="https://i.imgur.com/7wQljde.png" alt="Logo" class="logo-small">
+          <h1 class="welcome-text">Welcome</h1>
+          <form class="user-form" id="userForm">
+            <input type="text" id="name" name="name" placeholder="Name" required>
+            <input type="number" id="age" name="age" placeholder="Age" required>
+            <input type="text" id="occupation" name="occupation" placeholder="Occupation" required>
+            <button type="submit" class="next-button">Next</button>
+          </form>
+          <div class="page-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- صفحة الروتين -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container form-container center-content">
+          <img src="https://i.imgur.com/7wQljde.png" alt="Logo" class="logo-small">
+          <h1 class="welcome-text">Welcome</h1>
+          <div class="routine-box">
+            <form class="routine-form" id="routineForm">
+              <div id="routineInputs">
+                <input type="text" id="routineName" name="routineName" placeholder="Routine name" required>
+                <div class="time-inputs">
+                  <input type="time" id="routineStart" name="routineStart" placeholder="Routine start" required>
+                  <input type="time" id="routineEnd" name="routineEnd" placeholder="Routine end" required>
+                </div>
+              </div>
+              <div class="button-group">
+                <button type="button" id="addRoutine" class="small-button">Add routine</button>
+                <button type="button" id="clearForm" class="small-button">Clear</button>
+                <button type="submit" class="small-button">OK</button>
+              </div>
+            </form>
+          </div>
+          <button class="next-button" id="nextToTasks">Next</button>
+          <div class="page-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- صفحة المهام -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container form-container center-content">
+          <img src="https://i.imgur.com/7wQljde.png" alt="Logo" class="logo-small fixed-logo">
+          <h1 class="welcome-text fixed-text">Welcome</h1>
+          <div class="routine-box">
+            <form class="task-form" id="taskForm">
+              <div id="taskInputs">
+                <div class="time-inputs">
+                  <input type="text" id="taskName" name="taskName" placeholder="Task name" required>
+                </div>
+                <div class="time-inputs">
+                  <input type="number" id="taskNumber" name="taskNumber" placeholder="Number of tasks" required>
+                  <input type="text" id="taskDuration" name="taskDuration" placeholder="Task duration (minutes)" required>
+                </div>
+                <div id="dateContainer" class="date-container">
+                  <div class="date-input">
+                    <input type="date" id="taskDeadline" name="taskDeadline" class="task-deadline" placeholder="Task deadline (optional)">
+                    <button type="button" class="add-date" id="addDate">+</button>
+                  </div>
+                </div>
+                <div class="date-explanation">
+                  <small>(Optional) Choosing specific dates will avoid random task distribution.</small>
+                </div>
+              </div>
+              <div class="button-group">
+                <button type="button" id="addTask" class="small-button">Add other task</button>
+                <button type="button" id="clearTaskForm" class="small-button">Clear</button>
+                <button type="submit" class="small-button">OK</button>
+              </div>
+            </form>
+          </div>
+          <button class="next-button" id="nextToCalendar">Next</button>
+          <div class="page-indicator fixed-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- صفحة التقويم -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container calendar-container center-content">
+          <img src="https://i.imgur.com/7wQljde.png" alt="Logo" class="logo-small">
+          <h1 class="welcome-text">This is your schedule for a month</h1>
+          <div id="calendar"></div>
+          <div id="taskTable" class="task-grid"></div>
+          <button class="next-button" id="nextToDailySchedule">Next</button>
+          <div class="page-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- صفحة الجدول اليومي -->
+      <div class="swiper-slide slide-no-bg">
+        <div class="container form-container center-content">
+          <div class="routine-box">
+            <h2>Your schedule for today</h2>
+            <p>These are the tasks that you must complete for today. If you have accomplished one of them, put a check mark in front of the task.</p>
+            <ul id="taskList"></ul>
+            <button class="next-button" id="nextToUserInterfaceFromDaily">Next</button>
+          </div>
+          <div class="page-indicator fixed-indicator">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <!-- صفحة لوحة المستخدم -->
+      <div class="swiper-slide">
+        <div class="container center-content">
+          <div class="header">
+            <button class="username-btn">User name</button>
+            <div class="profile-icon">
+              <i class="fas fa-user-circle"></i>
+            </div>
+          </div>
+
+          <div class="progress-circle">
+            <div class="circle">
+              <div class="mask full">
+                <div class="fill"></div>
+              </div>
+              <div class="mask half">
+                <div class="fill"></div>
+                <div class="fill fix"></div>
+              </div>
+              <div class="inside-circle">79%</div>
+            </div>
+          </div>
+
+          <div class="current-date-time" id="current-date-time"></div>
+
+          <div class="notifications">
+            <h2>Notifications</h2>
+            <p>No new notifications</p>
+          </div>
+
+          <div class="schedule">
+            <h2>Your schedule for today</h2>
+            <p>Put an achievement mark in front of the tasks you completed today</p>
+            <div class="task">
+              <div class="task-name">Task name</div>
+              <div class="task-progress">50%</div>
+              <input type="checkbox" checked>
+            </div>
+            <div class="task">
+              <div class="task-name">Task name</div>
+              <div class="task-progress">40%</div>
+              <input type="checkbox" checked>
+            </div>
+            <div class="task">
+              <div class="task-name">Task name</div>
+              <div class="task-progress">50%</div>
+              <input type="checkbox" checked>
+            </div>
+          </div>
+
+          <div class="tasks-container">
+            <h2>Tasks Overview</h2>
+            <div class="task-progress-bar">
+              <span>Task 1</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%;">7/10</div>
+              </div>
+            </div>
+            <div class="task-progress-bar">
+              <span>Task 2</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 50%;">5/10</div>
+              </div>
+            </div>
+            <div class="task-progress-bar">
+              <span>Task 3</span>
+              <div class="progress">
+                <div class="progress-bar" style="width: 90%;">9/10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة المهام -->
+  <div id="taskModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Your schedule for today</h2>
+      <p>These are the tasks that you must complete for today. If you have accomplished one of them, put a check mark in front of the task.</p>
+      <ul id="taskListModal"></ul>
+      <button id="closeTasks" class="next-button">Ok</button>
+    </div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()">×</button>
+    <button class="sidebar-btn"><i class="fas fa-cog"></i> Settings</button>
+    <button class="sidebar-btn"><i class="fas fa-calendar-alt"></i> Monthly Schedule</button>
+    <button class="sidebar-btn"><i class="fas fa-calendar-day"></i> Daily Schedule</button>
+    <button class="sidebar-btn"><i class="fas fa-tasks"></i> Tasks & Routines</button>
+    <button class="sidebar-btn"><i class="fas fa-chart-bar"></i> Statistics</button>
+    <button class="sidebar-btn"><i class="fas fa-arrow-up"></i> Upgrade App</button>
+  </div>
+  <button class="open-sidebar-btn" id="sidebarButton" onclick="toggleSidebar()">☰</button>
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.js"></script>
+</body>
+</html>
